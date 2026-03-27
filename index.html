@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harmonia ducha i ciała - Gabinet Masażu</title>
-    <!-- Ładowanie stylów Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -12,11 +11,11 @@
                 extend: {
                     colors: {
                         spa: {
-                            100: '#f5f5f0', // Bardzo jasny beż
-                            200: '#e8e4d9', // Jasny beż
-                            300: '#d5cbb8', // Ciepły beż
-                            800: '#4a443b', // Ciemny brąz
-                            900: '#332f29', // Bardzo ciemny brąz
+                            100: '#f5f5f0',
+                            200: '#e8e4d9',
+                            300: '#d5cbb8',
+                            800: '#4a443b',
+                            900: '#332f29',
                         }
                     }
                 }
@@ -25,8 +24,7 @@
     </script>
     <style>
         .hero-bg {
-            /* Zastępcze zdjęcie wysokiej jakości, można podmienić URL na własne */
-            background-image: linear-gradient(rgba(74, 68, 59, 0.7), rgba(74, 68, 59, 0.5)), url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-image: linear-gradient(rgba(74, 68, 59, 0.6), rgba(74, 68, 59, 0.4)), url('https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
         }
@@ -35,13 +33,12 @@
 <body class="bg-spa-100 text-spa-800 font-sans">
 
     <!-- Nawigacja -->
-    <nav class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50 transition-all">
+    <nav class="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0">
-                   <img src="./logo.png" alt="Harmonia Ducha i Ciała Logo" style="height: 60px; width: auto; mix-blend-mode: multiply;">
+                   <img src="./logo.png" alt="Logo" style="height: 70px; width: auto;">
                 </div>
-                <!-- Menu dla komputerów -->
                 <div class="hidden md:flex space-x-8">
                     <a href="#o-gabinecie" class="text-spa-800 hover:text-spa-300 transition-colors px-3 py-2 text-sm uppercase tracking-wide">O gabinecie</a>
                     <a href="#oferta" class="text-spa-800 hover:text-spa-300 transition-colors px-3 py-2 text-sm uppercase tracking-wide">Oferta</a>
@@ -52,11 +49,13 @@
         </div>
     </nav>
 
-    <!-- Sekcja Hero -->
+    <!-- Sekcja Hero z DUŻYM LOGO -->
     <section class="hero-bg h-screen flex items-center justify-center text-center px-4">
         <div class="max-w-4xl mx-auto text-white mt-16">
-            <!-- DUŻE LOGO W SEKCJI HERO -->
-            <img src="./logo.png" alt="Harmonia Ducha i Ciała Logo" style="width: 350px; max-width: 80%; height: auto; margin: 0 auto 2rem auto; display: block; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));">
+            <!-- DUŻE LOGO W HERO -->
+            <div class="mb-8 flex justify-center">
+                <img src="./logo.png" alt="Harmonia Ducha i Ciała" style="width: 450px; max-width: 90%; height: auto; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));">
+            </div>
             
             <h1 class="text-4xl md:text-6xl font-serif font-bold mb-6 drop-shadow-md">Harmonia ducha i ciała</h1>
             <h2 class="text-xl md:text-3xl mb-8 font-light drop-shadow-md">Profesjonalny masaż i fizjoterapia w spokojnej atmosferze relaksu.</h2>
@@ -70,7 +69,7 @@
         </div>
     </section>
 
-    <!-- Sekcja: O gabinecie -->
+    <!-- Sekcja: O gabinecie - LOGO ZAMIAST ZDJĘCIA -->
     <section id="o-gabinecie" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -78,9 +77,12 @@
                 <div class="w-24 h-1 bg-spa-300 mx-auto"></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-                <div>
-                    <img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Atmosfera relaksu w gabinecie" class="rounded-lg shadow-xl w-full object-cover h-[500px]">
+                <!-- LEWA STRONA: DUŻE LOGO ZAMIAST ZDJĘCIA -->
+                <div class="flex justify-center items-center bg-spa-100 rounded-lg shadow-xl p-8 h-[500px]">
+                    <img src="./logo.png" alt="Harmonia Ducha i Ciała Logo" style="width: 100%; max-width: 400px; height: auto; display: block;">
                 </div>
+                
+                <!-- PRAWA STRONA: TEKST -->
                 <div>
                     <h3 class="text-2xl font-serif mb-6 text-spa-900">Spokojne miejsce stworzone do relaksu</h3>
                     <p class="text-spa-800 mb-6 leading-relaxed">
@@ -122,32 +124,26 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Karta usługi 1 -->
                 <div class="bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-shadow border border-spa-200">
                     <h3 class="text-xl font-bold mb-3 text-spa-900">Masaż klasyczny relaksacyjny</h3>
                     <p class="text-spa-800 text-sm leading-relaxed">Płynne i spokojne ruchy, które uwalniają od stresu i napięcia. Idealny po ciężkim dniu.</p>
                 </div>
-                <!-- Karta usługi 2 -->
                 <div class="bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-shadow border border-spa-200">
                     <h3 class="text-xl font-bold mb-3 text-spa-900">Masaż terapeutyczny / bólowy</h3>
                     <p class="text-spa-800 text-sm leading-relaxed">Skupia się na konkretnych dolegliwościach. Skutecznie redukuje ból pleców i napięcia mięśniowe.</p>
                 </div>
-                <!-- Karta usługi 3 -->
                 <div class="bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-shadow border border-spa-200">
                     <h3 class="text-xl font-bold mb-3 text-spa-900">Masaż mięśniowo‑powięziowy</h3>
                     <p class="text-spa-800 text-sm leading-relaxed">Głęboka praca na powięziach, przywracająca prawidłową ruchomość i uwalniająca chroniczne bóle.</p>
                 </div>
-                <!-- Karta usługi 4 -->
                 <div class="bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-shadow border border-spa-200">
                     <h3 class="text-xl font-bold mb-3 text-spa-900">Drenaż limfatyczny</h3>
                     <p class="text-spa-800 text-sm leading-relaxed">Pobudza krążenie limfy, redukuje obrzęki i wspomaga oczyszczanie organizmu z toksyn.</p>
                 </div>
-                <!-- Karta usługi 5 -->
                 <div class="bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-shadow border border-spa-200">
                     <h3 class="text-xl font-bold mb-3 text-spa-900">Masaż sportowy</h3>
                     <p class="text-spa-800 text-sm leading-relaxed">Intensywny zabieg przygotowujący do wysiłku lub wspomagający regenerację po treningu.</p>
                 </div>
-                <!-- Karta usługi 6 -->
                 <div class="bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-shadow border border-spa-200">
                     <h3 class="text-xl font-bold mb-3 text-spa-900">Refleksologia stóp</h3>
                     <p class="text-spa-800 text-sm leading-relaxed">Uciskanie odpowiednich punktów na stopach, które stymuluje naturalne procesy samoleczenia.</p>
@@ -192,7 +188,6 @@
                     </div>
                 </div>
                 
-                <!-- Mapa Google -->
                 <div class="h-[400px] w-full rounded-sm overflow-hidden shadow-lg border border-spa-200 bg-spa-200 flex items-center justify-center">
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10113.882937740209!2d19.1121!3d50.8118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4710b5c16b510c4d%3A0x6b2e7a4b8b63e52!2sCz%C4%99stochowa!5e0!3m2!1spl!2spl!4v1650000000000!5m2!1spl!2spl" 
@@ -218,7 +213,6 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <!-- Dane kontaktowe i przyciski -->
                 <div class="flex flex-col justify-center">
                     <div class="bg-white p-8 rounded-sm shadow-sm mb-8 border border-spa-300">
                         <h3 class="text-2xl font-serif text-spa-900 mb-6">Dane kontaktowe</h3>
@@ -260,7 +254,6 @@
                     </div>
                 </div>
 
-                <!-- Formularz -->
                 <div class="bg-white p-8 rounded-sm shadow-md border border-spa-300">
                     <form onsubmit="event.preventDefault(); alert('Dziękujemy! Formularz został wysłany. Skontaktujemy się z Tobą w celu potwierdzenia wizyty.'); this.reset();" class="space-y-6">
                         <div>
