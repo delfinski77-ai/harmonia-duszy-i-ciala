@@ -1,0 +1,667 @@
+import React, { useState, useEffect } from 'react';
+import { Phone, Mail, MapPin, Clock, Menu, X, ChevronDown, Star, Heart, Leaf, Award, CheckCircle } from 'lucide-react';
+
+const App: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    service: '',
+    date: '',
+    message: ''
+  });
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+    setTimeout(() => {
+      setFormSubmitted(false);
+      setFormData({ name: '', phone: '', email: '', service: '', date: '', message: '' });
+    }, 3000);
+  };
+
+  const services = [
+    {
+      icon: <Leaf className="w-8 h-8" />,
+      title: 'Masaż klasyczny relaksacyjny',
+      description: 'Idealny na początek Twojej przygody z masażem. Rozluźnia napięte mięśnie, redukuje stres i przynosi głęboki relaks całego ciała.'
+    },
+    {
+      icon: <Heart className="w-8 h-8" />,
+      title: 'Masaż terapeutyczny / bólowy',
+      description: 'Skupiony na eliminowaniu bólu pleców, karku czy ramion. Łączy techniki terapeutyczne z głębokim masażem tkanek.'
+    },
+    {
+      icon: <Award className="w-8 h-8" />,
+      title: 'Masaż mięśniowo-powięziowy',
+      description: 'Specjalistyczna technika działająca na powięzi – tkankę łączną otaczającą mięśnie. Pomaga w przewlekłych bólach i ograniczeniach ruchu.'
+    },
+    {
+      icon: <Star className="w-8 h-8" />,
+      title: 'Drenaż limfatyczny',
+      description: 'Delikatny masaż pobudzający krążenie limfy. Pomaga w redukcji obrzęków, poprawia odporność i wspomaga detoksykację organizmu.'
+    },
+    {
+      icon: <Heart className="w-8 h-8" />,
+      title: 'Masaż sportowy i regeneracyjny',
+      description: 'Dla aktywnych osób. Pomaga w regeneracji po treningu, zapobiega kontuzjom i poprawia wydajność sportową.'
+    },
+    {
+      icon: <Leaf className="w-8 h-8" />,
+      title: 'Masaż karku, szyi i ramion',
+      description: 'Rozwiązanie na napięcia spowodowane pracą biurową. Szybko przynosi ulgę i usuwa uczucie "sztywnego karku".'
+    },
+    {
+      icon: <Star className="w-8 h-8" />,
+      title: 'Masaż stóp / refleksologia',
+      description: 'Starożytna technika masażu punktów na stopach odpowiadających różnym organom. Przynosi relaks całego organizmu.'
+    },
+    {
+      icon: <CheckCircle className="w-8 h-8" />,
+      title: 'Konsultacja fizjoterapeutyczna',
+      description: 'Indywidualne spotkanie z oceną stanu zdrowia, zaleceniami ćwiczeń i przygotowaniem spersonalizowanego programu terapeutycznego.'
+    }
+  ];
+
+  const navItems = [
+    { id: 'about', label: 'O gabinecie' },
+    { id: 'services', label: 'Oferta' },
+    { id: 'location', label: 'Lokalizacja' },
+    { id: 'contact', label: 'Kontakt' }
+  ];
+
+  return (
+    <div className="min-h-screen bg-stone-50 font-sans">
+      {/* Nawigacja */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'bg-white shadow-lg' : 'bg-transparent'
+      }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            <div className="flex-shrink-0">
+              <span className={`text-xl font-serif font-bold transition-colors ${
+                scrolled ? 'text-stone-700' : 'text-white'
+              }`}>
+                🌿 Harmonia
+              </span>
+            </div>
+            
+            {/* Menu desktop */}
+            <div className="hidden md:flex space-x-8">
+              {navItems.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`transition-colors hover:text-amber-600 font-medium ${
+                    scrolled ? 'text-stone-600' : 'text-white'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Przycisk menu mobile */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className={`md:hidden p-2 rounded-lg transition-colors ${
+                scrolled ? 'text-stone-700 hover:bg-stone-100' : 'text-white hover:bg-white/10'
+              }`}
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Menu mobile rozwijane */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-white shadow-xl border-t">
+            <div className="px-4 py-3 space-y-2">
+              {navItems.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="block w-full text-left px-4 py-3 text-stone-700 hover:bg-amber-50 hover:text-amber-700 rounded-lg transition-colors"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </nav>
+
+      {/* Sekcja Hero */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url(https://images.unsplash.com/photo-1544161515-4ab6ce6db87?auto=format&fit=crop&q=80&w=1920&h=1080)'
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-900/60 via-stone-900/40 to-stone-900/70" />
+        
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="mb-6">
+            <span className="inline-block px-4 py-2 bg-amber-600/80 text-white text-sm font-medium rounded-full backdrop-blur-sm">
+              ✨ Nowy gabinet w Częstochowie
+            </span>
+          </div>
+          
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6 leading-tight">
+            Harmonia duszy i ciała
+          </h1>
+          <p className="text-xl sm:text-2xl text-amber-100 mb-4 font-light">
+            Gabinet Masażu
+          </p>
+          <p className="text-lg sm:text-xl text-stone-200 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Profesjonalny masaż i fizjoterapia w spokojnej atmosferze relaksu
+          </p>
+          
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 mb-10 max-w-2xl mx-auto border border-white/20">
+            <p className="text-stone-100 mb-4 leading-relaxed">
+              Nasz gabinet mieści się w Częstochowie przy ulicy Rzecznej 18a. 
+              Stawiamy na indywidualne podejście do każdego klienta, łącząc wiedzę 
+              fizjoterapeutyczną z wieloletnim doświadczeniem terapeutycznym.
+            </p>
+            <p className="text-stone-200 leading-relaxed">
+              Naszym celem jest, aby po wizycie opuszczał nasz gabinet z 
+              zrelaksowanym ciałem i spokojniejszą duchem.
+            </p>
+          </div>
+          
+          <button
+            onClick={() => scrollToSection('contact')}
+            className="inline-flex items-center gap-3 px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white text-lg font-semibold rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"
+          >
+            Umów wizytę
+            <ChevronDown className="w-5 h-5 animate-bounce" />
+          </button>
+        </div>
+
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <button onClick={() => scrollToSection('about')} className="text-white/70 hover:text-white transition-colors">
+            <ChevronDown className="w-8 h-8 animate-pulse" />
+          </button>
+        </div>
+      </section>
+
+      {/* Sekcja O gabinecie */}
+      <section id="about" className="py-20 sm:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-amber-600 font-medium tracking-wider uppercase text-sm">Nasz gabinet</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-stone-800 mt-3 mb-6">
+              O gabinecie
+            </h2>
+            <div className="w-24 h-1 bg-amber-500 mx-auto rounded-full" />
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="relative">
+              <img
+                src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&q=80&w=800&h=600"
+                alt="Wnętrze gabinetu masażu"
+                className="rounded-2xl shadow-2xl w-full h-auto object-cover"
+              />
+              <div className="absolute -bottom-6 -right-6 bg-amber-600 text-white p-6 rounded-2xl shadow-xl hidden sm:block">
+                <p className="text-3xl font-bold">10+</p>
+                <p className="text-amber-100 text-sm">lat doświadczenia</p>
+              </div>
+            </div>
+
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-2xl font-serif font-bold text-stone-800 mb-4">
+                  Spokojne miejsce stworzone do relaksu
+                </h3>
+                <p className="text-stone-600 leading-relaxed mb-4">
+                  Nasz gabinet to wyjątkowe miejsce, w którym każdy detal został zaprojektowany 
+                  z myślą o Twoim komforcie. Wyposażony w wygodne, podgrzewane leżanki, 
+                  aromaterapię i spokojną muzykę, tworzy idealną atmosferę do głębokiego relaksu.
+                </p>
+                <p className="text-stone-600 leading-relaxed">
+                  Ciepła, przytulna atmosfera sprawi, że od pierwszych chwil poczujesz się 
+                  swobodnie i zrelaksowany.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-amber-50 to-stone-50 rounded-2xl p-6 sm:p-8">
+                <h4 className="text-xl font-bold text-stone-800 mb-6 flex items-center gap-3">
+                  <Award className="w-6 h-6 text-amber-600" />
+                  Profesjonalizm i kwalifikacje
+                </h4>
+                <ul className="space-y-4">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-stone-700">
+                      <strong>Wysokie wykształcenie:</strong> ukończone studia magisterskie 
+                      z zakresu fizjoterapii i fizykoterapii
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-stone-700">
+                      <strong>Liczne szkolenia:</strong> masaż mięśniowo-powięziowy, drenaż 
+                      limfatyczny, masaż sportowy, terapia manualna, refleksologia i wiele innych
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-stone-700">
+                      <strong>Indywidualne podejście:</strong> każdy klient traktowany wyjątkowo, 
+                      zabiegi dobierane do konkretnych potrzeb
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sekcja Oferta */}
+      <section id="services" className="py-20 sm:py-28 bg-gradient-to-b from-stone-100 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-amber-600 font-medium tracking-wider uppercase text-sm">Nasze usługi</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-stone-800 mt-3 mb-6">
+              Oferta
+            </h2>
+            <div className="w-24 h-1 bg-amber-500 mx-auto rounded-full mb-6" />
+            <p className="text-stone-600 max-w-2xl mx-auto text-lg">
+              Oferujemy szeroki wybór zabiegów masażu i terapii, dostosowanych do 
+              indywidualnych potrzeb każdego klienta.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {services.map((service, index) => (
+              <div
+                key={index}
+                className="group bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-stone-100"
+              >
+                <div className="w-16 h-16 bg-gradient-to-br from-amber-100 to-amber-50 rounded-2xl flex items-center justify-center mb-5 text-amber-600 group-hover:bg-gradient-to-br group-hover:from-amber-600 group-hover:to-amber-500 group-hover:text-white transition-all duration-300">
+                  {service.icon}
+                </div>
+                <h3 className="text-lg font-bold text-stone-800 mb-3 group-hover:text-amber-700 transition-colors">
+                  {service.title}
+                </h3>
+                <p className="text-stone-600 text-sm leading-relaxed">
+                  {service.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <div className="inline-block bg-gradient-to-r from-amber-50 to-stone-50 border border-amber-200 rounded-2xl px-8 py-6">
+              <p className="text-stone-700">
+                <span className="text-amber-600 font-bold">💡 Wskazówka:</span> Nie wiesz, jaki masaż będzie dla Ciebie najlepszy? 
+                Skontaktuj się z nami – pomożemy dobrać idealny zabieg do Twoich potrzeb.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sekcja Lokalizacja i godziny */}
+      <section id="location" className="py-20 sm:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-amber-600 font-medium tracking-wider uppercase text-sm">Dojazd</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-stone-800 mt-3 mb-6">
+              Gdzie nas znajdziesz?
+            </h2>
+            <div className="w-24 h-1 bg-amber-500 mx-auto rounded-full" />
+          </div>
+
+          <div className="grid lg:grid-cols-5 gap-8">
+            <div className="lg:col-span-2 space-y-6">
+              <div className="bg-gradient-to-br from-amber-50 to-stone-50 rounded-2xl p-8 border border-amber-100">
+                <h3 className="text-xl font-bold text-stone-800 mb-6 flex items-center gap-3">
+                  <MapPin className="w-6 h-6 text-amber-600" />
+                  Adres
+                </h3>
+                <div className="space-y-3 text-stone-700">
+                  <p className="font-semibold text-lg">ul. Rzeczna 18a</p>
+                  <p>42-200 Częstochowa</p>
+                  <p className="text-stone-500 text-sm mt-4">
+                    🚗 Darmowy parking dostępny dla klientów
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-amber-50 to-stone-50 rounded-2xl p-8 border border-amber-100">
+                <h3 className="text-xl font-bold text-stone-800 mb-6 flex items-center gap-3">
+                  <Clock className="w-6 h-6 text-amber-600" />
+                  Godziny otwarcia
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-stone-600">Poniedziałek – Piątek</span>
+                    <span className="font-semibold text-stone-800">10:00 – 20:00</span>
+                  </div>
+                  <div className="h-px bg-amber-200" />
+                  <div className="flex justify-between items-center">
+                    <span className="text-stone-600">Sobota</span>
+                    <span className="font-semibold text-stone-800">9:00 – 15:00</span>
+                  </div>
+                  <div className="h-px bg-amber-200" />
+                  <div className="flex justify-between items-center">
+                    <span className="text-stone-600">Niedziela</span>
+                    <span className="font-semibold text-red-600">Zamknięte</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-3">
+              <div className="rounded-2xl overflow-hidden shadow-2xl h-80 sm:h-96 lg:h-full min-h-80">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2562.768180945718!2d19.129715376803594!3d50.03457992122053!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471699e2f2c1b3e7%3A0x8e4c7e6f9a4b3c2d!2sRzeczna%2C%20Cz%C4%99stochowa!5e0!3m2!1spl!2spl!4v1710000000000!5m2!1spl!2spl"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Mapa lokalizacji gabinetu"
+                  className="w-full h-full"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sekcja Kontakt */}
+      <section id="contact" className="py-20 sm:py-28 bg-gradient-to-b from-stone-800 to-stone-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-amber-400 font-medium tracking-wider uppercase text-sm">Skontaktuj się</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mt-3 mb-6">
+              Umów się na wizytę
+            </h2>
+            <div className="w-24 h-1 bg-amber-500 mx-auto rounded-full mb-6" />
+            <p className="text-stone-300 max-w-2xl mx-auto text-lg">
+              Zapraszamy na pierwszą sesję – umów się na wizytę telefonicznie lub przez formularz.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+            <div className="space-y-8">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="tel:730911023"
+                  className="flex-1 flex items-center justify-center gap-4 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white px-8 py-5 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
+                  <Phone className="w-7 h-7" />
+                  <div className="text-center">
+                    <p className="text-sm text-amber-100">Zadzwoń</p>
+                    <p className="text-xl font-bold">730 911 023</p>
+                  </div>
+                </a>
+                <a
+                  href="mailto:dorota.pyrkosz91@gmail.com"
+                  className="flex-1 flex items-center justify-center gap-4 bg-white/10 hover:bg-white/20 text-white px-8 py-5 rounded-2xl transition-all duration-300 backdrop-blur-sm border border-white/20"
+                >
+                  <Mail className="w-7 h-7" />
+                  <div className="text-center">
+                    <p className="text-sm text-stone-400">Napisz maila</p>
+                    <p className="text-base font-semibold">dorota.pyrkosz91@gmail.com</p>
+                  </div>
+                </a>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+                <h3 className="text-xl font-bold text-white mb-6">Dane kontaktowe</h3>
+                <div className="space-y-5">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-amber-600/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-5 h-5 text-amber-400" />
+                    </div>
+                    <div>
+                      <p className="text-stone-400 text-sm">Telefon</p>
+                      <p className="text-white font-semibold text-lg">730 911 023</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-amber-600/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-5 h-5 text-amber-400" />
+                    </div>
+                    <div>
+                      <p className="text-stone-400 text-sm">E-mail</p>
+                      <p className="text-white font-semibold">dorota.pyrkosz91@gmail.com</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-amber-600/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-5 h-5 text-amber-400" />
+                    </div>
+                    <div>
+                      <p className="text-stone-400 text-sm">Adres</p>
+                      <p className="text-white font-semibold">ul. Rzeczna 18a, 42-200 Częstochowa</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-8 sm:p-10 shadow-2xl">
+              {formSubmitted ? (
+                <div className="text-center py-12">
+                  <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle className="w-10 h-10 text-green-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-stone-800 mb-3">Wiadomość wysłana!</h3>
+                  <p className="text-stone-600">
+                    Dziękujemy za kontakt. Odezwiemy się do Ciebie najszybciej jak to możliwe.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-semibold text-stone-700 mb-2">
+                      Imię i nazwisko *
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Twoje imię"
+                      className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all bg-stone-50"
+                    />
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-semibold text-stone-700 mb-2">
+                        Telefon *
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        required
+                        placeholder="np. 123 456 789"
+                        className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all bg-stone-50"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-semibold text-stone-700 mb-2">
+                        E-mail
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="twój@email.pl"
+                        className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all bg-stone-50"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="service" className="block text-sm font-semibold text-stone-700 mb-2">
+                      Wybór usługi *
+                    </label>
+                    <select
+                      id="service"
+                      name="service"
+                      value={formData.service}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all bg-stone-50"
+                    >
+                      <option value="">-- Wybierz usługę --</option>
+                      <option value="masaz-relaksacyjny">Masaż klasyczny relaksacyjny</option>
+                      <option value="masaz-terapeutyczny">Masaż terapeutyczny / bólowy</option>
+                      <option value="masaz-miesniowo-powieziowy">Masaż mięśniowo-powięziowy</option>
+                      <option value="drenaz-limfatyczny">Drenaż limfatyczny</option>
+                      <option value="masaz-sportowy">Masaż sportowy i regeneracyjny</option>
+                      <option value="masaz-karku">Masaż karku, szyi i ramion</option>
+                      <option value="masaz-stop">Masaż stóp / refleksologia</option>
+                      <option value="konsultacja">Konsultacja fizjoterapeutyczna</option>
+                      <option value="inna">Inna usługa</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="date" className="block text-sm font-semibold text-stone-700 mb-2">
+                      Preferowana data i godzina
+                    </label>
+                    <input
+                      type="text"
+                      id="date"
+                      name="date"
+                      value={formData.date}
+                      onChange={handleInputChange}
+                      placeholder="np. Środa 15:00 lub Poniedziałek-Piątek po 16:00"
+                      className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all bg-stone-50"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-semibold text-stone-700 mb-2">
+                      Dodatkowe informacje
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      rows={4}
+                      placeholder="Opisz swoje potrzeby, dolegliwości lub zadaj pytanie..."
+                      className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all bg-stone-50 resize-none"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  >
+                    Wyślij wiadomość
+                  </button>
+
+                  <p className="text-xs text-stone-500 text-center">
+                    Pola oznaczone * są wymagane. Twoje dane są bezpieczne i nie zostaną 
+                    udostępnione osobom trzecim.
+                  </p>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stopka */}
+      <footer className="bg-stone-950 text-stone-400 py-12 sm:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <div className="lg:col-span-2">
+              <h4 className="text-white text-2xl font-serif font-bold mb-4">
+                🌿 Harmonia duszy i ciała
+              </h4>
+              <p className="text-stone-400 leading-relaxed max-w-md">
+                Profesjonalny gabinet masażu i fizjoterapii w Częstochowie. 
+                Tworzymy przestrzeń, w której możesz odprężyć ciało i umysł.
+              </p>
+            </div>
+            <div>
+              <h5 className="text-white font-bold mb-4">Godziny otwarcia</h5>
+              <ul className="space-y-2 text-sm">
+                <li>Pon–Pt: 10:00 – 20:00</li>
+                <li>Sobota: 9:00 – 15:00</li>
+                <li>Niedziela: Zamknięte</li>
+              </ul>
+            </div>
+            <div>
+              <h5 className="text-white font-bold mb-4">Kontakt</h5>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href="tel:730911023" className="hover:text-amber-400 transition-colors">
+                    📞 730 911 023
+                  </a>
+                </li>
+                <li>
+                  <a href="mailto:dorota.pyrkosz91@gmail.com" className="hover:text-amber-400 transition-colors break-all">
+                    ✉️ dorota.pyrkosz91@gmail.com
+                  </a>
+                </li>
+                <li>📍 ul. Rzeczna 18a, Częstochowa</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="h-px bg-stone-800 mb-8" />
+
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-stone-500 text-sm">
+              © {new Date().getFullYear()} Harmonia duszy i ciała. Wszystkie prawa zastrzeżone.
+            </p>
+            <p className="text-stone-600 text-sm">
+              Stworzone z 💚 dla Twojego relaksu
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
